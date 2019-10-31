@@ -25,11 +25,13 @@ RUN \
         && docker-php-ext-configure \
             imap \
                 --with-imap \
+                #--with-imap-ssl \
         && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
         && docker-php-ext-install -j${NPROC} \
             gd \
             mysqli \
             opcache \
         && apk del --no-cache \
-            freetype-dev libpng-dev libjpeg-turbo-dev \
-            imap-dev
+            freetype-dev libpng-dev libjpeg-turbo-dev
+            #freetype-dev libpng-dev libjpeg-turbo-dev \
+            #imap-dev
