@@ -6,6 +6,7 @@ WORKDIR /var/www
 RUN \
         apk update \
         && apk add --no-cache \
+            freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev \
             php7-mysqli \
             php7-opcache \
             php7-gd \
@@ -14,6 +15,16 @@ RUN \
             php7-phar \
             php7-json \
             php7-mbstring \
-        && docker-php-ext-install \
+        && docker-php-ext-configure \
+            gd \
+                --with-gd \
+                --with-freetype-dir=/usr/include/ \
+                --with-png-dir=/usr/include/ \
+                --with-jpeg-dir=/usr/include/ \
+        && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
+        && docker-php-ext-install -j${NPROC} \
+            gd \
             mysqli \
-            opcache
+            opcache \
+        && apk del --no-cache \
+            freetype-dev libpng-dev libjpeg-turbo-dev
