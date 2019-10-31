@@ -7,6 +7,7 @@ RUN \
         apk update \
         && apk add --no-cache \
             freetype libpng libjpeg-turbo freetype-dev libpng-dev libjpeg-turbo-dev \
+            imap-dev \
             php7-mysqli \
             php7-opcache \
             php7-gd \
@@ -21,10 +22,14 @@ RUN \
                 --with-freetype-dir=/usr/include/ \
                 --with-png-dir=/usr/include/ \
                 --with-jpeg-dir=/usr/include/ \
+        && docker-php-ext-configure \
+            imap \
+                --with-imap \
         && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
         && docker-php-ext-install -j${NPROC} \
             gd \
             mysqli \
             opcache \
         && apk del --no-cache \
-            freetype-dev libpng-dev libjpeg-turbo-dev
+            freetype-dev libpng-dev libjpeg-turbo-dev \
+            imap-dev
