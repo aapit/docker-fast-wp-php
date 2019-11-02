@@ -34,7 +34,6 @@ RUN \
             opcache \
             imap \
         && apk del --no-cache \
-            freetype-dev libpng-dev libjpeg-turbo-dev \
-            imap-dev
+            freetype-dev libpng-dev libjpeg-turbo-dev
 
 USER www-data
